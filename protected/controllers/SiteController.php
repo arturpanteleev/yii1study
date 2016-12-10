@@ -106,4 +106,12 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+	public function actionPartners()
+	{
+		$dataProvider=new CActiveDataProvider('Post');
+		$this->render('partners',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
 }

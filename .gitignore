@@ -1,2 +1,4 @@
 /vendor/
 /.idea/
+#/protected/runtime/*.log
+#/protected/runtime/*.log
