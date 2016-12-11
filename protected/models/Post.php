@@ -1,18 +1,18 @@
 <?php
 
 /**
- * This is the model class for table "post".
+ * This is the model class for table "posts".
  *
- * The followings are the available columns in table 'post':
+ * The followings are the available columns in table 'posts':
  * @property integer $id
- * @property string $name
- * @property string $text
- * @property string $date_create
- * @property string $date_update
- * @property integer $author_id
- *
- * The followings are the available model relations:
- * @property TblUser $author
+ * @property string $title
+ * @property string $content
+ * @property integer $author
+ * @property integer $category
+ * @property string $date_created
+ * @property string $date_updated
+ * @property integer $rating
+ * @property integer $views
  */
 class Post extends CActiveRecord
 {
@@ -21,7 +21,7 @@ class Post extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'post';
+		return 'posts';
 	}
 
 	/**
@@ -32,12 +32,13 @@ class Post extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('text, date_create, author_id', 'required'),
-			array('author_id', 'numerical', 'integerOnly'=>true),
-			array('name, date_update', 'safe'),
+			array('title, content, author, category', 'required'),
+			array('author, category, rating, views', 'numerical', 'integerOnly'=>true),
+			array('title', 'length', 'max'=>255),
+			array('date_created, date_updated', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, text, date_create, date_update, author_id', 'safe', 'on'=>'search'),
+			array('id, title, content, author, category, date_created, date_updated, rating, views', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -49,7 +50,6 @@ class Post extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'author' => array(self::BELONGS_TO, 'TblUser', 'author_id'),
 		);
 	}
 
@@ -60,11 +60,14 @@ class Post extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'text' => 'Text',
-			'date_create' => 'Date Create',
-			'date_update' => 'Date Update',
-			'author_id' => 'Author',
+			'title' => 'Title',
+			'content' => 'Content',
+			'author' => 'Author',
+			'category' => 'Category',
+			'date_created' => 'Date Created',
+			'date_updated' => 'Date Updated',
+			'rating' => 'Rating',
+			'views' => 'Views',
 		);
 	}
 
@@ -87,11 +90,14 @@ class Post extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('text',$this->text,true);
-		$criteria->compare('date_create',$this->date_create,true);
-		$criteria->compare('date_update',$this->date_update,true);
-		$criteria->compare('author_id',$this->author_id);
+		$criteria->compare('title',$this->title,true);
+		$criteria->compare('content',$this->content,true);
+		$criteria->compare('author',$this->author);
+		$criteria->compare('category',$this->category);
+		$criteria->compare('date_created',$this->date_created,true);
+		$criteria->compare('date_updated',$this->date_updated,true);
+		$criteria->compare('rating',$this->rating);
+		$criteria->compare('views',$this->views);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -102,7 +108,7 @@ class Post extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Post the static model class
+	 * @return Posts the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

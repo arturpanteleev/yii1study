@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Posts'=>array('index'),
-	$model->name,
+	$model->title,
 );
 
 $this->menu=array(
@@ -22,10 +22,13 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'name',
-		'text',
-		'date_create',
-		'date_update',
-		'author_id',
+		'title',
+		'content',
+		'author',
+		'category',
+		'date_created',
+		'date_updated',
+		'rating',
+		'views',
 	),
 )); ?>
